@@ -18,6 +18,16 @@
             <a href="#" class="primary-btn">Add to Card</a>
           </div>
         </div>
+
+        <!-- if product empty then display a message -->
+        <div
+          *ngIf="products?.length == 0"
+          class="alert alert-warning col-md-12"
+          dir="rtl"
+          style="font-size: large; font-weight: bold"
+        >
+          کالایی یافت نشد
+        </div>
       </div>
     </div>
   </div>

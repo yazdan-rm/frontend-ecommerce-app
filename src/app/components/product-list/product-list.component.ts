@@ -12,6 +12,7 @@ import { ProductService } from 'src/app/services/product.service';
 export class ProductListComponent implements OnInit {
   products: Product[] = [];
   currentCategoryId: number | undefined;
+  searchMode: boolean = false;
 
   constructor(
     private productService: ProductService,
@@ -25,6 +26,25 @@ export class ProductListComponent implements OnInit {
   }
 
   listProduct() {
+    this.searchMode = this.route.snapshot.paramMap.has('keyword');
+
+    if (this.searchMode) {
+      this.handleSearchProducts();
+    } else {
+      this.handleListOfProducts();
+    }
+  }
+
+  handleSearchProducts() {
+    const keyword = this.route.snapshot.paramMap.get('keyword')!;
+
+    // now search for products using keyword
+    this.productService
+      .searchProducts(keyword)
+      .subscribe((data) => (this.products = data));
+  }
+
+  handleListOfProducts() {
     // check if "id" parameter is available
     const hasCategoryId: boolean = this.route.snapshot.paramMap.has('id');
 
