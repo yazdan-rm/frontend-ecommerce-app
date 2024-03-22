@@ -5,17 +5,20 @@
         <!-- loop over the collection of products -->
         <div *ngFor="let tempProduct of products" class="col-md-3">
           <div class="product-box">
-            <img
-              src="{{ tempProduct.imageUrl }}"
-              alt="img"
-              class="img-responsive"
-            />
-            <h1>{{ convertToJalaliWithWeekday(tempProduct.dateCreated) }}</h1>
-            <h1>{{ tempProduct.name }}</h1>
+            <a routerLink="/products/{{ tempProduct.id }}"
+              ><img
+                [src]="tempProduct.imageUrl"
+                alt="img"
+                class="img-responsive"
+            /></a>
+            <h1 >{{ convertToJalaliWithWeekday(tempProduct.dateCreated) }}</h1>
+            <a routerLink="/products/{{ tempProduct.id }}"
+              ><h1>{{ tempProduct.name }}</h1></a
+            >
             <div class="price">
               {{ tempProduct.unitPrice | currency : "USD" }}
             </div>
-            <a href="#" class="primary-btn">Add to Card</a>
+            <a  href="#" class="primary-btn">Add to Card</a>
           </div>
         </div>
 
@@ -27,6 +30,37 @@
           style="font-size: large; font-weight: bold"
         >
           کالایی یافت نشد
+        </div>
+      </div>
+      <div class="footer-pagination">
+        <div class="row">
+          <div class="col-md-6"></div>
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-9" style="padding-left: 8%; margin-top:25px">
+                <ngb-pagination [(page)] = "pageNumber"
+                                [pageSize]="pageSize"
+                                [maxSize]="5"
+                                [boundaryLinks]="true"
+                                [collectionSize]="totalElements"
+                                (pageChange)="listProduct()"
+                >
+                </ngb-pagination>
+              </div>
+
+              <div class="col-md-3 mb-4" style="text-align:right;">
+                <span class="me-2">Page Size</span>
+                <select class="form-select"
+                        #pageSelectedItem
+                        (change)="updatePageSize(pageSelectedItem.value)">
+                  <option selected="selected">5</option>
+                  <option>10</option>
+                  <option>20</option>
+                  <option>50</option>
+                </select>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
