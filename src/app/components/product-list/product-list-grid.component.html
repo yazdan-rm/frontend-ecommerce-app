@@ -15,10 +15,10 @@
             <a routerLink="/products/{{ tempProduct.id }}"
               ><h1>{{ tempProduct.name }}</h1></a
             >
-            <div class="price">
+            <div class="price" style="  margin: 15px 0 5px 0;">
               {{ tempProduct.unitPrice | currency : "USD" }}
             </div>
-            <a  href="#" class="primary-btn">Add to Card</a>
+            <button (click)="addToCard(tempProduct)"  href="#" class="btn btn-primary btn-sm rounded-5">Add to Card</button>
           </div>
         </div>
 
@@ -43,7 +43,7 @@
                                 [maxSize]="5"
                                 [boundaryLinks]="true"
                                 [collectionSize]="totalElements"
-                                (pageChange)="listProduct()"
+                                (pageChange)="listProducts()"
                 >
                 </ngb-pagination>
               </div>

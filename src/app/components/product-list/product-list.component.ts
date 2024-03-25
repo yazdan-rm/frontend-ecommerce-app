@@ -27,11 +27,12 @@ export class ProductListComponent implements OnInit {
     private route: ActivatedRoute
   ) {}
 
-  ngOnInit(): void {
-
+  ngOnInit() {
+    this.route.paramMap.subscribe(() => {
+      this.listProducts();
+    });
   }
-
-  listProduct() {
+  listProducts() {
     this.searchMode = this.route.snapshot.paramMap.has('keyword');
 
     if (this.searchMode) {
@@ -111,7 +112,7 @@ export class ProductListComponent implements OnInit {
   updatePageSize(value: string) {
     this.pageSize = +value;
     this.pageNumber = 1;
-    this.listProduct();
+    this.listProducts();
   }
   /////////////////////////////////////////////////////////////////
   convertToJalaliWithWeekday(miladiDate: Date): string {
@@ -121,7 +122,7 @@ export class ProductListComponent implements OnInit {
     const jalaliDateString = jalaliDate.format('jYYYY/jMM/jDD dddd');
     console.log(
       moment
-        .from(jalaliDateString, 'fa', 'dddd، jYYYY/jMM/jDD')
+        .from(jalaliDateString, 'fa', 'jYYYY/jMM/jDD dddd')
         .locale('en')
         .toDate()
     );
@@ -130,4 +131,7 @@ export class ProductListComponent implements OnInit {
   }
 
   /////////////////////////////////////////////////////////////////
+  addToCard(tempProduct: Product) {
+    console.log(`Adding to card ${tempProduct.name} ${tempProduct.unitPrice}`);
+  }
 }

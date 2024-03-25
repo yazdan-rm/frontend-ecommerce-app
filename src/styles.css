@@ -556,9 +556,10 @@ input.au-input.au-input-xl {
 }
 .product-box {
   margin-bottom: 60px;
+  text-align: center;
 }
 .price {
-  margin: 15px 0 0;
+  margin: 15px 0 5px 0;
   font-weight: 800;
   color: #0da8e4;
 }
