@@ -1,7 +1,6 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {CartItem} from "../common/cart-item";
 import {Subject} from "rxjs";
-import {beforeRead} from "@popperjs/core";
 
 @Injectable({
   providedIn: 'root'
@@ -18,23 +17,50 @@ export class CartService {
   addToCart(cartItem: CartItem){
     // check if we already have the item to our cart
     let alreadyExistsInCart:boolean = false;
-    let existingCartItem: CartItem = undefined!;
+    let existingCartItem: CartItem | undefined;
 
     if(this.cartItems.length > 0){
       // find the item in the cart based on item id
 
       // check if we found it
-      this.cartItems.forEach(tempCartItem =>{
-        if(tempCartItem.id === cartItem.id){
-          existingCartItem = tempCartItem;
-          alreadyExistsInCart = true;
-        }
-      });
+      existingCartItem = this.cartItems.find(tempCartItem => tempCartItem.id === cartItem.id);
 
-      if(alreadyExistsInCart)
-        existingCartItem.quantity++;
+      alreadyExistsInCart = (existingCartItem != undefined);
+    }
+
+      if(alreadyExistsInCart) existingCartItem!.quantity++;
       else
         this.cartItems.push(cartItem);
+
+    // compute cart total price and total quantity
+    this.computeCartTotals();
+
+  }
+
+  private computeCartTotals() {
+
+    let totalPriceValue = 0;
+    let totalQuantityValue = 0;
+
+    this.cartItems.forEach(cartItem => {
+      totalPriceValue += cartItem.unitPrice * cartItem.quantity;
+      totalQuantityValue += cartItem.quantity;
+    });
+
+    // publish the new values ... all subscribers with receive the new data
+    this.totalPrice.next(totalPriceValue);
+    this.totalQuantity.next(totalQuantityValue);
+
+    this.logCartData(totalPriceValue, totalQuantityValue);
+  }
+
+  private logCartData(totalPriceValue: number, totalQuantityValue: number) {
+    console.log(`Contents of the cart`);
+    for (let tempCartItem of this.cartItems) {
+      const subTotalPrice = tempCartItem.quantity * tempCartItem.unitPrice;
+      console.log(`name: ${tempCartItem.name}, quantity: ${tempCartItem.quantity}, unitPrice: ${tempCartItem.unitPrice}, subTotalPrice: ${subTotalPrice}`);
     }
+    console.log(`totalPrice: ${totalPriceValue.toFixed(2)}, totalQuantity: ${totalQuantityValue}`);
+    console.log('============')
   }
 }

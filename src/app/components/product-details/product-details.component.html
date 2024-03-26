@@ -1,13 +1,15 @@
 <div class="detail-section">
   <div class="container-fluid">
-    <img src="{{ product.imageUrl }}" alt="img" class="detail-img" />
+    <img alt="img" class="detail-img" src="{{ product.imageUrl }}"/>
 
     <h3>{{ product.name }}</h3>
     <div class="price">{{ product.unitPrice | currency : "USD" }}</div>
-    <p>{{ product.description }}</p>
-
-    <a routerLink="/products" class="mt-5" style="text-transform: capitalize"
-      >back to product list</a
+    <p class="mb-3">{{ product.description }}</p>
+    <button (click)="addToCard(product)" class="btn btn-primary btn-sm rounded-5 px-3 py-2">Add to Card</button>
+    <br>
+    <hr>
+    <a class="mt-5" routerLink="/products" style="text-transform: capitalize"
+    >back to product list</a
     >
   </div>
 </div>

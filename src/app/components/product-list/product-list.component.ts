@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import * as moment from 'jalali-moment';
 import { Product } from 'src/app/common/product';
 import { ProductService } from 'src/app/services/product.service';
+import {CartItem} from "../../common/cart-item";
+import {CartService} from "../../services/cart.service";
 
 @Component({
   selector: 'app-product-list',
@@ -24,7 +26,8 @@ export class ProductListComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private cartService: CartService,
   ) {}
 
   ngOnInit() {
@@ -120,12 +123,12 @@ export class ProductListComponent implements OnInit {
     const jalaliDay = jalaliDate.format('dddd');
     const jalaliDateNumber = jalaliDate.format('jYYYY/jMM/jDD');
     const jalaliDateString = jalaliDate.format('jYYYY/jMM/jDD dddd');
-    console.log(
-      moment
-        .from(jalaliDateString, 'fa', 'jYYYY/jMM/jDD dddd')
-        .locale('en')
-        .toDate()
-    );
+    // console.log(
+    //   moment
+    //     .from(jalaliDateString, 'fa', 'jYYYY/jMM/jDD dddd')
+    //     .locale('en')
+    //     .toDate()
+    // );
 
     return `${jalaliDateNumber} ${jalaliDay}`;
   }
@@ -133,5 +136,9 @@ export class ProductListComponent implements OnInit {
   /////////////////////////////////////////////////////////////////
   addToCard(tempProduct: Product) {
     console.log(`Adding to card ${tempProduct.name} ${tempProduct.unitPrice}`);
+
+    const cartItem = new CartItem(tempProduct);
+
+    this.cartService.addToCart(cartItem);
   }
 }
