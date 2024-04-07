@@ -9,7 +9,12 @@ import {logMessages} from "@angular-devkit/build-angular/src/builders/browser-es
 })
 export class CheckoutComponent implements OnInit {
 
-  checkoutFormGroup!:FormGroup ;
+   checkoutFormGroup!:FormGroup ;
+   totalPrice: number = 0;
+   totalQuantity: number = 0;
+
+
+
   constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
@@ -26,12 +31,20 @@ export class CheckoutComponent implements OnInit {
         country: [''],
         zipCode: ['']
       }),
+      billingAddress: this.formBuilder.group({
+        street: [''],
+        city: [''],
+        state: [''],
+        country: [''],
+        zipCode:['']
+      }),
       creditCard: this.formBuilder.group({
         cardType:[''],
         nameOnCard: [''],
         cardNumber: [''],
         securityCode: [''],
-        expirationMonth: ['']
+        expirationMonth: [''],
+        expirationYear:['']
       })
     })
   }
@@ -43,5 +56,16 @@ export class CheckoutComponent implements OnInit {
     console.log(this.checkoutFormGroup.get('customer')?.value.firstName);
     console.log(this.checkoutFormGroup.get('customer')?.value.lastName);
     console.log(this.checkoutFormGroup.get('customer')?.value.email);
+    console.log(this.checkoutFormGroup.value);
+  }
+
+  copyShippingAddressToBillingAddress(event:any) {
+    console.log(event.target.checked);
+    if(event.target.checked){
+      this.checkoutFormGroup.controls['billingAddress'].
+          setValue(this.checkoutFormGroup.controls['shippingAddress'].value);
+    }else{
+      this.checkoutFormGroup.controls['billingAddress'].reset();
+    }
   }
 }
