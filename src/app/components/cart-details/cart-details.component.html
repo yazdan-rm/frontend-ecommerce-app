@@ -1,0 +1,73 @@
+<div class="main-content">
+  <div class="section-content section-content-p30">
+    <div class="container-fluid">
+      <div *ngIf="cartItems.length > 0; else empty">
+        <table class="table table-bordered">
+          <tr>
+            <th style="width:20%;">Product Image</th>
+            <th style="width:50%;">Product Detail</th>
+            <th style="width:30%;"></th>
+          </tr>
+          <tr *ngFor="let tempCartItem of cartItems">
+            <td>
+              <img [src]="tempCartItem.imageUrl" class="img-fluid mx-auto d-block" width="150px">
+            </td>
+            <td>
+              <p>{{ tempCartItem.name }}</p>
+              <p>{{ tempCartItem.unitPrice | currency:'USD' }}</p>
+            </td>
+            <td>
+              <div class="items">
+                <label>Quantity: </label>
+                <div class="row g-0">
+                  <div class="col">
+                    <button
+                      (click)="incrementQuantity(tempCartItem)"
+                      class="btn btn-primary btn-sm">
+                      <i class="fa-solid fa-plus fa-shake"></i>
+                    </button>
+                  </div>
+                  <div class="col ms-4 me-2">
+                    {{tempCartItem.quantity}}
+                  </div>
+                  <div class="col">
+                    <button
+                      (click)="decrementQuantity(tempCartItem)"
+                      class="btn btn-primary btn-sm">
+                      <i class="fa-solid fa-minus fa-shake"></i>
+                    </button>
+                  </div>
+                  <div class="col-8"></div>
+                </div>
+                <button
+                  (click)="remove(tempCartItem)"
+                  class="btn btn-primary btn-sm mt-2">
+                  Remove
+                </button>
+              </div>
+              <p>Subtotal Price: {{ tempCartItem.quantity * tempCartItem.unitPrice | currency:'USD' }}</p>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2"></td>
+            <td style="font-weight: bold">
+              <p>Total Quantity: {{ totalQuantity }}</p>
+              <p>Shipping: FREE</p>
+              <p>Total Price: {{ totalPrice | currency: 'USD' }}</p>
+              <div><a routerLink="/checkout" class="btn btn-primary">Checkout</a></div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #empty >
+<div class="alert alert-warning rounded-5" role="alert">
+  <i class="mt-5 fa-solid fa-cart-shopping fa-bounce fa-2xl
+d-flex align-content-center justify-content-center mw-100">
+  </i>
+  <p class="fw-bold d-flex align-content-center justify-content-center mw-100 mt-5" style="font-size: 30px">سبد خالی است</p>
+</div>
+</ng-template>

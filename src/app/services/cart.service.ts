@@ -11,15 +11,17 @@ export class CartService {
 
   totalPrice: Subject<number> = new Subject<number>();
   totalQuantity: Subject<number> = new Subject<number>();
-  constructor() { }
+
+  constructor() {
+  }
 
 
-  addToCart(cartItem: CartItem){
+  addToCart(cartItem: CartItem) {
     // check if we already have the item to our cart
-    let alreadyExistsInCart:boolean = false;
+    let alreadyExistsInCart: boolean = false;
     let existingCartItem: CartItem | undefined;
 
-    if(this.cartItems.length > 0){
+    if (this.cartItems.length > 0) {
       // find the item in the cart based on item id
 
       // check if we found it
@@ -28,16 +30,16 @@ export class CartService {
       alreadyExistsInCart = (existingCartItem != undefined);
     }
 
-      if(alreadyExistsInCart) existingCartItem!.quantity++;
-      else
-        this.cartItems.push(cartItem);
+    if (alreadyExistsInCart) existingCartItem!.quantity++;
+    else
+      this.cartItems.push(cartItem);
 
     // compute cart total price and total quantity
     this.computeCartTotals();
 
   }
 
-  private computeCartTotals() {
+  computeCartTotals() {
 
     let totalPriceValue = 0;
     let totalQuantityValue = 0;
@@ -62,5 +64,27 @@ export class CartService {
     }
     console.log(`totalPrice: ${totalPriceValue.toFixed(2)}, totalQuantity: ${totalQuantityValue}`);
     console.log('============')
+  }
+
+  decrementQuantity(tempCartItem: CartItem) {
+    tempCartItem.quantity--;
+    if(tempCartItem.quantity === 0)
+      this.remove(tempCartItem);
+    else
+      this.computeCartTotals();
+  }
+
+  remove(tempCartItem: CartItem) {
+    // get index of item in array
+    const itemIndex = this.cartItems.findIndex
+    (
+      item => item.id === tempCartItem.id);
+
+    // if found, remove the item from array at the given index
+    if(itemIndex > -1){
+      this.cartItems.splice(itemIndex, 1);
+
+      this.computeCartTotals();
+    }
   }
 }
